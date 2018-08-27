@@ -15,7 +15,6 @@
             <level>ERROR</level>
             <onMatch>DENY</onMatch>
             <onMismatch>ACCEPT</onMismatch>
-            
         </filter>
         <encoder>
             <pattern>

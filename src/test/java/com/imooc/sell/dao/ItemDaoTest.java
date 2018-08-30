@@ -26,7 +26,7 @@ public class ItemDaoTest {
     @Test
     public void saveTest(){
         Item item = new Item();
-        item.setItemId("66855");
+        item.setItemId("668556");
         item.setItemName("汉堡包");
         item.setItemPrice(new BigDecimal("6.55"));
         item.setItemStock(100);

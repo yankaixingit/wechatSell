@@ -26,14 +26,14 @@ public class ItemDaoTest {
     @Test
     public void saveTest(){
         Item item = new Item();
-        item.setItemId("668556");
-        item.setItemName("汉堡包");
-        item.setItemPrice(new BigDecimal("6.55"));
-        item.setItemStock(100);
-        item.setItemDescription("好吃的一匹!");
+        item.setItemId("78454");
+        item.setItemName("皮皮虾");
+        item.setItemPrice(new BigDecimal("15.3"));
+        item.setItemStock(222);
+        item.setItemDescription("真鸡儿好吃！");
         item.setItemIcon("http://xxx.jpg");
         item.setItemStatus(0);
-        item.setCategoryNumber(332);
+        item.setCategoryNumber(123);
         item.setDelete(false);
         itemDao.save(item);
     }

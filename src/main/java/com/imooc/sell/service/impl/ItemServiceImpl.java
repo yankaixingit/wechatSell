@@ -47,8 +47,17 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public void increaseStock(List<CartDto> cartDtoList) {
-
+        for (CartDto cartDto : cartDtoList) {
+            Item item = itemDao.findOne(cartDto.getItemId());
+            if (item == null) {
+                throw new SellException(ExceptionEnum.ITEM_NOT_EXIST);
+            }
+            Integer result = item.getItemStock() + cartDto.getItemQuantity();
+            item.setItemStock(result);
+            itemDao.save(item);
+        }
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.imooc.sell.entity;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.math.BigDecimal;

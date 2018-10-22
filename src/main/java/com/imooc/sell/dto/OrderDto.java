@@ -14,6 +14,8 @@ public class OrderDto extends OrderMaster {
 
     List<OrderDetail> orderDetailList;
 
+
+
     public List<OrderDetail> getOrderDetailList() {
         return orderDetailList;
     }
@@ -21,4 +23,7 @@ public class OrderDto extends OrderMaster {
     public void setOrderDetailList(List<OrderDetail> orderDetailList) {
         this.orderDetailList = orderDetailList;
     }
+
+
+
 }

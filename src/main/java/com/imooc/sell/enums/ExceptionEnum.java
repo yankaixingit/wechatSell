@@ -7,7 +7,12 @@ package com.imooc.sell.enums;
  */
 public enum ExceptionEnum {
     ITEM_NOT_EXIST(1001,"商品不存在"),
-    ITEM_STOCK_LACK(1002,"商品库存不足")
+    ITEM_STOCK_LACK(1002,"商品库存不足"),
+    ORDER_NOT_EXIST(1003,"订单不存在"),
+    ORDERDETAIL_NOT_EXIST(1004,"订单详情不存在"),
+    ORDER_STATUS_ERROR(1005,"订单状态不正确"),
+    ORDER_UPDATE_FAIL(1006,"订单更新失败"),
+    ORDER_DETAIL_EMPTY(1007,"订单详情为空")
     ;
 
     ExceptionEnum(Integer code, String message) {

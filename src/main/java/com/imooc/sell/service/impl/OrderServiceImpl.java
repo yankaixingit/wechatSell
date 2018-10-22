@@ -1,5 +1,6 @@
 package com.imooc.sell.service.impl;
 
+import com.imooc.sell.converter.OrderMasterToOrderDtoConverter;
 import com.imooc.sell.dao.OrderDetailDao;
 import com.imooc.sell.dao.OrderMasterDao;
 import com.imooc.sell.dto.CartDto;
@@ -14,15 +15,19 @@ import com.imooc.sell.exception.SellException;
 import com.imooc.sell.service.ItemService;
 import com.imooc.sell.service.OrderService;
 import com.imooc.sell.util.KeyUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +39,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+
+    private Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Autowired
     private OrderMasterDao orderMasterDao;
@@ -89,17 +96,58 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto findOne(String orderId) {
-        return null;
+        OrderMaster orderMaster = orderMasterDao.findOne(orderId);
+        if (orderMaster == null) {
+            throw new SellException(ExceptionEnum.ORDER_NOT_EXIST);
+        }
+        List<OrderDetail> orderDetails = orderDetailDao.findByOrderId(orderId);
+        if (CollectionUtils.isEmpty(orderDetails)) {
+            throw new SellException(ExceptionEnum.ORDERDETAIL_NOT_EXIST);
+        }
+        OrderDto orderDto = new OrderDto();
+        BeanUtils.copyProperties(orderMaster, orderDto);
+        orderDto.setOrderDetailList(orderDetails);
+        return orderDto;
     }
 
     @Override
     public Page<OrderDto> findList(String openId, Pageable pageable) {
-        return null;
+        Page<OrderMaster> orderMasters = orderMasterDao.findByBuyerOpenid(openId, pageable);
+        List<OrderDto> convert = OrderMasterToOrderDtoConverter.convert(orderMasters.getContent());
+        return new PageImpl<OrderDto>(convert, pageable, orderMasters.getTotalElements());
     }
 
     @Override
     public OrderDto cancel(OrderDto orderDto) {
-        return null;
+        OrderMaster orderMaster = new OrderMaster();
+
+        //判断订单状态
+        if (!orderDto.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
+            log.error("【取消订单】订单状态不正确，orderId={},orderStatus={}", orderDto.getOrderId(), orderDto.getOrderStatus());
+            throw new SellException(ExceptionEnum.ORDER_STATUS_ERROR);
+        }
+        //修改订单状态
+        orderDto.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
+        BeanUtils.copyProperties(orderDto, orderMaster);
+        OrderMaster master = orderMasterDao.save(orderMaster);
+        if (master == null) {
+            log.error("【取消订单】更新订单失败，orderMaster={}", orderMaster);
+            throw new SellException(ExceptionEnum.ORDER_UPDATE_FAIL);
+        }
+        //返回库存
+        if (CollectionUtils.isEmpty(orderDto.getOrderDetailList())) {
+            log.error("【取消订单】订单中无商品详情，orderDto={}", orderDto);
+            throw new SellException(ExceptionEnum.ORDER_DETAIL_EMPTY);
+        }
+        List<CartDto> cartDtoList = orderDto.getOrderDetailList().stream().map(e ->
+                new CartDto(e.getItemId(), e.getItemQuantity())
+        ).collect(Collectors.toList());
+        itemService.increaseStock(cartDtoList);
+        //如果已支付，退款
+        if(orderDto.getPayStatus().equals(PayStatusEnum.SUCCESS)){
+            //TODO
+        }
+        return orderDto;
     }
 
     @Override

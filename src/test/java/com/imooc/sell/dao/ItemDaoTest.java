@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -26,16 +27,17 @@ public class ItemDaoTest {
     @Test
     public void saveTest(){
         Item item = new Item();
-        item.setItemId("78454");
-        item.setItemName("皮皮虾");
-        item.setItemPrice(new BigDecimal("15.3"));
-        item.setItemStock(222);
-        item.setItemDescription("真鸡儿好吃！");
-        item.setItemIcon("http://xxx.jpg");
+        item.setItemId("26265");
+        item.setItemName("煌上煌");
+        item.setItemPrice(new BigDecimal("26.3"));
+        item.setItemStock(10);
+        item.setItemDescription("好吃真爽！");
+        item.setItemIcon("http://zsfd.jpg");
         item.setItemStatus(0);
         item.setCategoryNumber(123);
         item.setDelete(false);
         itemDao.save(item);
+        System.out.println(1/0);
     }
 
     @Test

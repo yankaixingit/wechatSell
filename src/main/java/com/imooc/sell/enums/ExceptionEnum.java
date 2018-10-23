@@ -15,6 +15,8 @@ public enum ExceptionEnum {
     ORDER_DETAIL_EMPTY(1007,"订单详情为空"),
     ORDER_PAY_STATUS_ERROR(1008,"订单支付状态不正确"),
 
+    ORDER_OWNER_ERROR(1009,"该订单不属于当前用户"),
+
     PARAM_ERROR(2001,"参数不正确")
     ;
 

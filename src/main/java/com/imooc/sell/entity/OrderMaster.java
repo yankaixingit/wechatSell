@@ -1,5 +1,7 @@
 package com.imooc.sell.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.math.BigDecimal;
@@ -11,6 +13,7 @@ import java.sql.Timestamp;
  * version 1.0
  */
 @Entity
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderMaster {
 
     @Id

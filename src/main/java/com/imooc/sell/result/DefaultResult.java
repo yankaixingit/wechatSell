@@ -1,6 +1,8 @@
 package com.imooc.sell.result;
 
 
+import java.util.List;
+
 /**
  * author: 严凯新
  * date: 2018/9/2 16:29
@@ -12,7 +14,7 @@ public class DefaultResult<T> {
 
     private String msg = "成功";
 
-    private T data;
+    private Object data;
 
     public int getCode() {
         return code;
@@ -30,11 +32,11 @@ public class DefaultResult<T> {
         this.msg = msg;
     }
 
-    public T getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(Object data) {
         this.data = data;
     }
 }

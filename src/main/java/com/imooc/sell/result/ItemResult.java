@@ -8,16 +8,16 @@ import java.util.List;
  * date: 2018/9/2 16:38
  * version 1.0
  */
-public class ItemResult<T> extends DefaultResult{
+public class ItemResult extends DefaultResult{
 
-    private List<T> data;
+    private ItemWrap data;
 
     @Override
-    public List<T> getData() {
+    public ItemWrap getData() {
         return data;
     }
 
-    public void setData(List<T> data) {
+    public void setData(ItemWrap data) {
         this.data = data;
     }
 }

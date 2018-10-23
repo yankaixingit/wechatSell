@@ -5,8 +5,10 @@ import com.imooc.sell.entity.ItemCategory;
 import com.imooc.sell.result.ItemResult;
 import com.imooc.sell.service.ItemCategoryService;
 import com.imooc.sell.service.ItemService;
+import com.imooc.sell.util.ResultVOUtil;
 import com.imooc.sell.vo.CategoryVo;
 import com.imooc.sell.vo.ItemVo;
+import com.imooc.sell.vo.ResultVO;
 import org.hibernate.validator.internal.util.CollectionHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanFactoryUtils;
@@ -34,9 +36,12 @@ public class BuyerItemController {
     @Autowired
     private ItemCategoryService itemCategoryService;
 
+    /**
+     * 买家商品列表
+     * @return
+     */
     @GetMapping("/list")
-    public ItemResult list() {
-        ItemResult result = new ItemResult();
+    public ResultVO list() {
         List<CategoryVo> categoryVos = new ArrayList<>();
         //查询所有的上架商品
         List<Item> items = itemService.findUpAll();
@@ -68,7 +73,6 @@ public class BuyerItemController {
             categoryVo.setFoods(itemVos);
             categoryVos.add(categoryVo);
         }
-        result.setData(categoryVos);
-        return result;
+        return ResultVOUtil.success(categoryVos);
     }
 }

@@ -50,6 +50,7 @@ public class BuyerItemController {
         List<Integer> categoryNumberList = items.stream().map(e -> e.getCategoryNumber()).collect(Collectors.toList());
         List<ItemCategory> itemCategoryList = itemCategoryService.findListByCategoryNumber(categoryNumberList);
 
+
         //数据拼装
         for (ItemCategory itemCategory : itemCategoryList) {
             CategoryVo categoryVo = new CategoryVo();
